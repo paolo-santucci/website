@@ -20,7 +20,7 @@ default_lang: it
 languages: [it, en]
 
 # Attiva / disattiva il blog. Metti `true` per accenderlo.
-blog: false
+blog: true
 
 # Link social / contatti (mostrati in Home e in Contatti)
 social:
