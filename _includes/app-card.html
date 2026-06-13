@@ -1,0 +1,13 @@
+{%- assign app = include.app -%}
+{%- if app.url contains '//' -%}{%- assign ext = true -%}{%- endif -%}
+<a class="app-card" href="{{ app.url }}"{% if ext %} target="_blank" rel="noopener"{% endif %}>
+  <div class="app-icon icon-{{ app.color | default: 'pink' }}">
+    {%- if app.icon -%}{% include icon.html name=app.icon %}{%- else -%}<span class="app-icon-letter">{{ app.name | slice: 0 }}</span>{%- endif -%}
+  </div>
+  <h3>{{ app.name }}</h3>
+  <p><span class="lang-it">{{ app.tagline_it }}</span><span class="lang-en">{{ app.tagline_en }}</span></p>
+  <div class="app-foot">
+    <div class="chips">{% for c in app.chips %}<span class="chip">{{ c }}</span>{% endfor %}</div>
+    <span class="open-link">{% include t.html key="open" %}{% include icon.html name="ext" %}</span>
+  </div>
+</a>

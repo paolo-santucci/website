@@ -1,0 +1,64 @@
+# ───────────────────────────────────────────────────────────
+#  paolosantucci.com — Tema Jekyll in stile GNOME / libadwaita
+# ───────────────────────────────────────────────────────────
+
+title: Paolo Santucci
+url: "https://paolosantucci.com"
+baseurl: ""
+
+# Identità
+author:
+  name: Paolo Santucci
+  initials: PS
+
+# ── Opzioni del tema ────────────────────────────────────────
+# Colore accento (palette Adwaita): blue | teal | green | purple | orange | red
+accent: blue
+
+# Lingua predefinita e lingue offerte dallo switch IT/EN
+default_lang: it
+languages: [it, en]
+
+# Attiva / disattiva il blog. Metti `true` per accenderlo.
+blog: false
+
+# Link social / contatti (mostrati in Home e in Contatti)
+social:
+  - name: GitHub
+    url: https://github.com/paolo-santucci
+    handle: github.com/paolo-santucci
+    letter: "G"
+    color: dark
+  - name: LinkedIn
+    url: https://linkedin.com/in/paolo-santucci
+    handle: linkedin.com/in/paolo-santucci
+    letter: "in"
+    color: blue
+
+# ── Collezioni ──────────────────────────────────────────────
+collections:
+  apps:
+    output: false
+
+# ── Build ───────────────────────────────────────────────────
+markdown: kramdown
+permalink: /blog/:title/
+
+sass:
+  style: compressed
+
+defaults:
+  - scope: { path: "", type: "posts" }
+    values: { layout: "post", nav: "blog" }
+  - scope: { path: "", type: "apps" }
+    values: { layout: "default" }
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - screenshots
+  - "Mockup — Tema GNOME.html"
+  - "Mockup - Tema GNOME.html"
+  - "_ds_manifest.json"

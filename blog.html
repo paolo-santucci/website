@@ -1,0 +1,19 @@
+---
+layout: default
+nav: blog
+permalink: /blog/
+---
+<h1 class="page-title">Blog</h1>
+{%- if site.blog %}
+<p class="page-intro">{% include t.html key="blog_intro" %}</p>
+<div class="group">
+  <div class="boxed-list">
+    {%- for post in site.posts %}{% include post-row.html post=post %}{% endfor %}
+  </div>
+</div>
+{%- else %}
+<div class="note">
+  {% include icon.html name="info" %}
+  <div>{% include t.html key="blog_disabled" %}</div>
+</div>
+{%- endif %}

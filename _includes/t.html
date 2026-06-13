@@ -1,0 +1,5 @@
+{%- comment -%}
+  Stringa bilingue. Uso: {% include t.html key="nav_home" %}
+  Stampa entrambe le lingue; lo switch IT/EN ne mostra una via CSS.
+{%- endcomment -%}
+<span class="lang-it">{{ site.data.i18n.it[include.key] }}</span><span class="lang-en">{{ site.data.i18n.en[include.key] }}</span>

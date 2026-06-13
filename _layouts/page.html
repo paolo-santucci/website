@@ -1,0 +1,10 @@
+---
+layout: default
+---
+<h1 class="page-title"><span class="lang-it">{{ page.title_it | default: page.title }}</span><span class="lang-en">{{ page.title_en | default: page.title }}</span></h1>
+{%- if page.intro_it or page.intro_en %}
+<p class="page-intro"><span class="lang-it">{{ page.intro_it }}</span><span class="lang-en">{{ page.intro_en }}</span></p>
+{%- endif %}
+<div class="prose">
+  {{ content }}
+</div>

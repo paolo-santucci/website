@@ -1,0 +1,10 @@
+---
+layout: default
+---
+<article class="prose post">
+  <h1 class="page-title"><span class="lang-it">{{ page.title_it | default: page.title }}</span><span class="lang-en">{{ page.title_en | default: page.title }}</span></h1>
+  {{ content }}
+  <p class="post-back">
+    <a class="open-link back" href="{{ '/blog/' | relative_url }}">{% include icon.html name="chevron" %}{% include t.html key="blog_back" %}</a>
+  </p>
+</article>

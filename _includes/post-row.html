@@ -1,0 +1,10 @@
+{%- assign post = include.post -%}
+<a class="row activatable" href="{{ post.url | relative_url }}">
+  <div class="row-text">
+    <div class="row-title"><span class="lang-it">{{ post.title_it | default: post.title }}</span><span class="lang-en">{{ post.title_en | default: post.title }}</span></div>
+    {%- if post.excerpt_it or post.excerpt_en %}
+    <div class="row-sub"><span class="lang-it">{{ post.excerpt_it }}</span><span class="lang-en">{{ post.excerpt_en }}</span></div>
+    {%- endif %}
+  </div>
+  <div class="row-suffix">{% include icon.html name="chevron" %}</div>
+</a>

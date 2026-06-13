@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="it" data-lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Paolo Santucci</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     Adwaita / libadwaita design tokens
+     ============================================================ */
+  :root, html[data-theme="light"] {
+    --accent-bg: #3584e4;
+    --accent-fg: #ffffff;
+    --accent: #1c71d8;
+    --window-bg: #fafafb;
+    --window-fg: rgba(0, 0, 6, 0.82);
+    --view-bg: #ffffff;
+    --headerbar-bg: rgba(255, 255, 255, 0.82);
+    --headerbar-border: rgba(0, 0, 6, 0.12);
+    --card-bg: #ffffff;
+    --dim-fg: rgba(0, 0, 6, 0.55);
+    --border: rgba(0, 0, 6, 0.10);
+    --divider: rgba(0, 0, 6, 0.08);
+    --row-hover: rgba(0, 0, 6, 0.04);
+    --chip-bg: rgba(0, 0, 6, 0.06);
+    --shadow-card: 0 1px 2px rgba(0, 0, 6, 0.08), 0 0 0 1px rgba(0, 0, 6, 0.04);
+    --shadow-pop: 0 1px 3px rgba(0, 0, 6, 0.12), 0 6px 16px rgba(0, 0, 6, 0.10);
+  }
+  html[data-theme="dark"] {
+    --accent-bg: #3584e4;
+    --accent-fg: #ffffff;
+    --accent: #81b3ef;
+    --window-bg: #222226;
+    --window-fg: #ffffff;
+    --view-bg: #1d1d20;
+    --headerbar-bg: rgba(46, 46, 50, 0.82);
+    --headerbar-border: rgba(0, 0, 0, 0.5);
+    --card-bg: rgba(255, 255, 255, 0.07);
+    --dim-fg: rgba(255, 255, 255, 0.56);
+    --border: rgba(255, 255, 255, 0.10);
+    --divider: rgba(255, 255, 255, 0.08);
+    --row-hover: rgba(255, 255, 255, 0.06);
+    --chip-bg: rgba(255, 255, 255, 0.10);
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.30), 0 0 0 1px rgba(0, 0, 0, 0.18);
+    --shadow-pop: 0 1px 3px rgba(0, 0, 0, 0.4), 0 6px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: "Inter", "Cantarell", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--window-fg);
+    background: var(--window-bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    letter-spacing: -0.005em;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  /* Language helpers */
+  html[data-lang="it"] .lang-en { display: none; }
+  html[data-lang="en"] .lang-it { display: none; }
+
+  /* ============================================================
+     Header bar
+     ============================================================ */
+  .headerbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 52px;
+    padding: 0 12px;
+    background: var(--headerbar-bg);
+    backdrop-filter: saturate(1.6) blur(20px);
+    -webkit-backdrop-filter: saturate(1.6) blur(20px);
+    border-bottom: 1px solid var(--headerbar-border);
+  }
+
+  .hb-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    padding-left: 4px;
+    white-space: nowrap;
+  }
+  .hb-title .dot {
+    width: 22px; height: 22px; border-radius: 7px;
+    background: linear-gradient(135deg, #62a0ea, #1c71d8);
+    display: grid; place-items: center;
+    color: #fff; font-size: 11px; font-weight: 800;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+
+  .hb-spacer { flex: 1 1 auto; }
+
+  /* View switcher (centered nav) */
+  .viewswitcher {
+    display: flex;
+    gap: 2px;
+    background: transparent;
+  }
+  .nav-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--window-fg);
+    font: inherit;
+    font-weight: 500;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+  .nav-btn svg { width: 16px; height: 16px; opacity: 0.85; }
+  .nav-btn:hover { background: var(--row-hover); }
+  .nav-btn.active {
+    background: var(--chip-bg);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .nav-btn.active svg { opacity: 1; }
+
+  /* Icon buttons & lang toggle */
+  .icon-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--window-fg);
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: grid; place-items: center;
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  .icon-btn:hover { background: var(--row-hover); }
+  .icon-btn svg { width: 18px; height: 18px; }
+
+  .lang-toggle {
+    display: inline-flex;
+    background: var(--chip-bg);
+    border-radius: 8px;
+    padding: 2px;
+    gap: 2px;
+  }
+  .lang-toggle button {
+    appearance: none; border: none; background: transparent;
+    color: var(--dim-fg);
+    font: inherit; font-weight: 600; font-size: 13px;
+    padding: 4px 9px; border-radius: 6px; cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+  .lang-toggle button.active {
+    background: var(--card-bg);
+    color: var(--window-fg);
+    box-shadow: var(--shadow-card);
+  }
+  html[data-theme="dark"] .lang-toggle button.active { background: rgba(255,255,255,0.16); box-shadow: none; }
+
+  .sun { display: none; }
+  html[data-theme="dark"] .sun { display: block; }
+  html[data-theme="dark"] .moon { display: none; }
+
+  /* ============================================================
+     Layout
+     ============================================================ */
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 16px 80px;
+  }
+  .view { display: none; animation: fade 0.25s ease; }
+  .view.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ============================================================
+     Hero / intro
+     ============================================================ */
+  .hero { text-align: center; padding: 24px 0 8px; }
+  .avatar {
+    width: 104px; height: 104px; border-radius: 50%;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #62a0ea, #1c71d8);
+    display: grid; place-items: center;
+    color: #fff; font-size: 38px; font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: inset 0 2px 2px rgba(255,255,255,0.3), 0 4px 14px rgba(28,113,216,0.28);
+  }
+  .hero h1 {
+    margin: 0 0 8px;
+    font-size: 32px; font-weight: 800; letter-spacing: -0.02em;
+  }
+  .hero .subtitle {
+    margin: 0 auto;
+    max-width: 460px;
+    color: var(--dim-fg);
+    font-size: 16px;
+    text-wrap: balance;
+  }
+  .hero-actions {
+    display: flex; justify-content: center; gap: 10px;
+    margin-top: 24px; flex-wrap: wrap;
+  }
+
+  .btn {
+    appearance: none; border: none; cursor: pointer;
+    font: inherit; font-weight: 600; font-size: 14px;
+    padding: 9px 18px; border-radius: 99px;
+    display: inline-flex; align-items: center; gap: 7px;
+    transition: filter 0.12s ease, background 0.12s ease;
+    text-decoration: none;
+  }
+  .btn svg { width: 15px; height: 15px; }
+  .btn-suggested { background: var(--accent-bg); color: var(--accent-fg); }
+  .btn-suggested:hover { filter: brightness(1.06); }
+  .btn-flat {
+    background: var(--chip-bg); color: var(--window-fg);
+  }
+  .btn-flat:hover { background: var(--row-hover); }
+
+  /* ============================================================
+     Preference group
+     ============================================================ */
+  .group { margin-top: 40px; }
+  .group-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 12px; margin: 0 4px 12px;
+  }
+  .group-title { font-size: 16px; font-weight: 700; margin: 0; }
+  .group-desc { color: var(--dim-fg); font-size: 13px; margin: 2px 4px 12px; }
+  .group-link {
+    font-size: 13px; font-weight: 600; color: var(--accent);
+    text-decoration: none; cursor: pointer; white-space: nowrap;
+  }
+  .group-link:hover { text-decoration: underline; }
+
+  /* Boxed list */
+  .boxed-list {
+    background: var(--card-bg);
+    border-radius: 13px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 13px 16px;
+    text-decoration: none; color: inherit;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.12s ease;
+  }
+  .row + .row::before {
+    content: ""; position: absolute; left: 16px; right: 0; top: 0;
+    height: 1px; background: var(--divider);
+  }
+  .row.activatable:hover { background: var(--row-hover); }
+  .row-icon {
+    flex: none; width: 38px; height: 38px; border-radius: 9px;
+    display: grid; place-items: center; color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .row-icon svg { width: 20px; height: 20px; }
+  .row-icon.chip-letter { font-weight: 700; font-size: 16px; }
+  .ic-blue { background: linear-gradient(135deg, #62a0ea, #1c71d8); }
+  .ic-dark { background: linear-gradient(135deg, #4b4b50, #1f1f23); }
+  .ic-teal { background: linear-gradient(135deg, #5bc8af, #1a9e8f); }
+  .row-text { flex: 1 1 auto; min-width: 0; }
+  .row-title { font-weight: 600; font-size: 15px; }
+  .row-sub { color: var(--dim-fg); font-size: 13px; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; }
+  .row-suffix { flex: none; display: flex; align-items: center; gap: 6px; color: var(--dim-fg); }
+  .row-suffix svg { width: 16px; height: 16px; }
+
+  /* App grid */
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .app-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    box-shadow: var(--shadow-card);
+    padding: 22px;
+    display: flex; flex-direction: column;
+    text-decoration: none; color: inherit;
+    transition: transform 0.14s ease, box-shadow 0.14s ease;
+  }
+  .app-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-pop); }
+  .app-icon {
+    width: 64px; height: 64px; border-radius: 15px;
+    background: linear-gradient(135deg, #f06ba8, #b5217a);
+    display: grid; place-items: center; color: #fff;
+    box-shadow: inset 0 2px 2px rgba(255,255,255,0.3), 0 3px 8px rgba(181,33,122,0.25);
+    margin-bottom: 16px;
+  }
+  .app-icon svg { width: 34px; height: 34px; }
+  .app-card h3 { margin: 0 0 4px; font-size: 18px; font-weight: 700; }
+  .app-card p { margin: 0 0 16px; color: var(--dim-fg); font-size: 14px; flex: 1 1 auto; }
+  .app-foot { display: flex; align-items: center; justify-content: space-between; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    font-size: 11.5px; font-weight: 600; color: var(--dim-fg);
+    background: var(--chip-bg); padding: 3px 9px; border-radius: 99px;
+  }
+  .open-link { font-size: 13px; font-weight: 600; color: var(--accent); display: inline-flex; align-items: center; gap: 5px; }
+  .open-link svg { width: 14px; height: 14px; }
+
+  /* Prose (About / blog body) */
+  .prose { font-size: 16px; line-height: 1.65; }
+  .prose p { margin: 0 0 18px; color: var(--window-fg); }
+  .prose .lead { font-size: 18px; color: var(--window-fg); }
+
+  /* Status / disabled note */
+  .note {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: var(--card-bg); border-radius: 13px;
+    box-shadow: var(--shadow-card);
+    padding: 16px 18px; margin-top: 16px;
+    font-size: 14px; color: var(--dim-fg);
+  }
+  .note svg { width: 18px; height: 18px; flex: none; color: var(--accent); margin-top: 1px; }
+  .note code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12.5px; background: var(--chip-bg); padding: 1px 6px; border-radius: 5px; color: var(--window-fg); }
+
+  /* Page title (sub-pages) */
+  .page-title { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin: 4px 0 6px; }
+  .page-intro { color: var(--dim-fg); font-size: 16px; margin: 0 0 8px; max-width: 540px; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--divider);
+    padding: 24px 16px 40px;
+    text-align: center;
+    color: var(--dim-fg);
+    font-size: 13px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* Mockup banner */
+  .mock-banner {
+    background: var(--chip-bg);
+    color: var(--dim-fg);
+    text-align: center;
+    font-size: 12.5px;
+    padding: 7px 12px;
+    font-weight: 500;
+  }
+  .mock-banner strong { color: var(--window-fg); font-weight: 700; }
+
+  @media (max-width: 680px) {
+    .viewswitcher .nav-btn span { display: none; }
+    .nav-btn { padding: 8px; }
+    .hb-title .name-full { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mock-banner">
+  <span class="lang-it"><strong>Mockup</strong> — anteprima del look. Prova il toggle tema e lingua qui a destra ↗</span>
+  <span class="lang-en"><strong>Mockup</strong> — look preview. Try the theme & language toggles on the right ↗</span>
+</div>
+
+<!-- ============================ HEADER ============================ -->
+<header class="headerbar">
+  <div class="hb-title">
+    <span class="dot">PS</span>
+    <span class="name-full">Paolo Santucci</span>
+  </div>
+
+  <div class="hb-spacer"></div>
+
+  <nav class="viewswitcher" id="nav">
+    <button class="nav-btn active" data-view="home">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7 8 2.5 13.5 7"/><path d="M3.5 6.5V13h9V6.5"/></svg>
+      <span class="lang-it">Home</span><span class="lang-en">Home</span>
+    </button>
+    <button class="nav-btn" data-view="apps">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1.2"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1.2"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1.2"/><rect x="9" y="9" width="4.5" height="4.5" rx="1.2"/></svg>
+      <span>App</span>
+    </button>
+    <button class="nav-btn" data-view="blog">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="2" width="10" height="12" rx="1.5"/><path d="M5.5 5.5h5M5.5 8h5M5.5 10.5h3"/></svg>
+      <span>Blog</span>
+    </button>
+    <button class="nav-btn" data-view="about">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 7.2v4"/><circle cx="8" cy="5" r="0.4" fill="currentColor"/></svg>
+      <span class="lang-it">Chi sono</span><span class="lang-en">About</span>
+    </button>
+    <button class="nav-btn" data-view="contact">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3.5" width="12" height="9" rx="1.5"/><path d="m2.5 4.5 5.5 4 5.5-4"/></svg>
+      <span class="lang-it">Contatti</span><span class="lang-en">Contact</span>
+    </button>
+  </nav>
+
+  <div class="hb-spacer"></div>
+
+  <div class="lang-toggle" id="langToggle">
+    <button data-lang="it" class="active">IT</button>
+    <button data-lang="en">EN</button>
+  </div>
+
+  <button class="icon-btn" id="themeBtn" aria-label="Tema">
+    <svg class="moon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10.5A6.5 6.5 0 0 1 7.5 3a6.5 6.5 0 1 0 7.5 7.5Z"/></svg>
+    <svg class="sun" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3.4"/><path d="M9 1.5v1.7M9 14.8v1.7M1.5 9h1.7M14.8 9h1.7M3.7 3.7l1.2 1.2M13.1 13.1l1.2 1.2M14.3 3.7l-1.2 1.2M4.9 13.1l-1.2 1.2"/></svg>
+  </button>
+</header>
+
+<main>
+  <!-- ============================ HOME ============================ -->
+  <section class="view active" id="view-home">
+    <div class="hero">
+      <div class="avatar">PS</div>
+      <h1>Paolo Santucci</h1>
+      <p class="subtitle">
+        <span class="lang-it">Senior software engineer. Produco anche delle app, per diletto personale.</span>
+        <span class="lang-en">Senior software engineer. I also build apps, for personal enjoyment.</span>
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-suggested" data-goto="apps">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1.2"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1.2"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1.2"/><rect x="9" y="9" width="4.5" height="4.5" rx="1.2"/></svg>
+          <span class="lang-it">Le mie app</span><span class="lang-en">My apps</span>
+        </a>
+        <a class="btn btn-flat" data-goto="contact">
+          <span class="lang-it">Contatti</span><span class="lang-en">Get in touch</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Apps group -->
+    <div class="group">
+      <div class="group-header">
+        <h2 class="group-title"><span class="lang-it">Le mie app</span><span class="lang-en">My apps</span></h2>
+        <a class="group-link" data-goto="apps"><span class="lang-it">Vedi tutte</span><span class="lang-en">See all</span></a>
+      </div>
+      <div class="app-grid">
+        <a class="app-card" href="#" onclick="return false">
+          <div class="app-icon">
+            <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="17" cy="17" r="10"/><path d="M17 7a10 10 0 0 1 7.1 17"/></svg>
+          </div>
+          <h3>Métra</h3>
+          <p>
+            <span class="lang-it">Tracker per il ciclo mestruale, semplice e rispettoso della privacy.</span>
+            <span class="lang-en">A simple, privacy-respecting menstrual cycle tracker.</span>
+          </p>
+          <div class="app-foot">
+            <div class="chips">
+              <span class="chip">GTK4</span>
+              <span class="chip">Linux</span>
+            </div>
+            <span class="open-link">
+              <span class="lang-it">Apri</span><span class="lang-en">Open</span>
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10 10 4"/><path d="M5 4h5v5"/></svg>
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Blog group -->
+    <div class="group">
+      <div class="group-header">
+        <h2 class="group-title"><span class="lang-it">Dal blog</span><span class="lang-en">From the blog</span></h2>
+        <a class="group-link" data-goto="blog"><span class="lang-it">Tutti i post</span><span class="lang-en">All posts</span></a>
+      </div>
+      <div class="boxed-list" id="home-posts"></div>
+    </div>
+
+    <!-- Contact group -->
+    <div class="group">
+      <div class="group-header">
+        <h2 class="group-title"><span class="lang-it">Contatti</span><span class="lang-en">Contact</span></h2>
+      </div>
+      <div class="boxed-list" id="home-contacts"></div>
+    </div>
+  </section>
+
+  <!-- ============================ APPS ============================ -->
+  <section class="view" id="view-apps">
+    <h1 class="page-title"><span class="lang-it">Le mie app</span><span class="lang-en">My apps</span></h1>
+    <p class="page-intro">
+      <span class="lang-it">Piccoli progetti che sviluppo nel tempo libero, per imparare e per il piacere di costruire.</span>
+      <span class="lang-en">Small projects I build in my spare time, to learn and for the joy of making things.</span>
+    </p>
+    <div class="group">
+      <div class="app-grid">
+        <a class="app-card" href="#" onclick="return false">
+          <div class="app-icon">
+            <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="17" cy="17" r="10"/><path d="M17 7a10 10 0 0 1 7.1 17"/></svg>
+          </div>
+          <h3>Métra</h3>
+          <p>
+            <span class="lang-it">Tracker per il ciclo mestruale, semplice e rispettoso della privacy. Tutti i dati restano sul tuo dispositivo.</span>
+            <span class="lang-en">A simple, privacy-respecting menstrual cycle tracker. All data stays on your device.</span>
+          </p>
+          <div class="app-foot">
+            <div class="chips">
+              <span class="chip">GTK4</span>
+              <span class="chip">libadwaita</span>
+              <span class="chip">Linux</span>
+            </div>
+            <span class="open-link">
+              <span class="lang-it">Sito</span><span class="lang-en">Website</span>
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10 10 4"/><path d="M5 4h5v5"/></svg>
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ BLOG ============================ -->
+  <section class="view" id="view-blog">
+    <h1 class="page-title">Blog</h1>
+    <p class="page-intro">
+      <span class="lang-it">Appunti su sviluppo software, GNOME e i miei progetti.</span>
+      <span class="lang-en">Notes on software development, GNOME and my own projects.</span>
+    </p>
+    <div class="group">
+      <div class="boxed-list" id="blog-posts"></div>
+    </div>
+    <div class="note">
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><path d="M9 8v4.5"/><circle cx="9" cy="5.5" r="0.5" fill="currentColor"/></svg>
+      <div>
+        <span class="lang-it">Il blog è una funzione opzionale del tema: si attiva o disattiva con <code>blog: true</code> nel file <code>_config.yml</code>. I post non mostrano la data.</span>
+        <span class="lang-en">The blog is an optional theme feature: switch it on or off with <code>blog: true</code> in <code>_config.yml</code>. Posts show no date.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ ABOUT ============================ -->
+  <section class="view" id="view-about">
+    <h1 class="page-title"><span class="lang-it">Chi sono</span><span class="lang-en">About</span></h1>
+    <div class="prose" style="margin-top:18px">
+      <p class="lead">
+        <span class="lang-it">Sono Paolo Santucci, senior software engineer.</span>
+        <span class="lang-en">I'm Paolo Santucci, a senior software engineer.</span>
+      </p>
+      <p>
+        <span class="lang-it">Di giorno lavoro su sistemi software complessi. Nel tempo libero progetto e sviluppo piccole app, per diletto personale e per la soddisfazione di portare un'idea fino al rilascio.</span>
+        <span class="lang-en">By day I work on complex software systems. In my spare time I design and build small apps, for personal enjoyment and for the satisfaction of taking an idea all the way to release.</span>
+      </p>
+      <p>
+        <span class="lang-it">Mi piace il software ben fatto: interfacce pulite, attenzione ai dettagli e rispetto per chi lo usa. Per questo seguo le linee guida di GNOME anche su questo sito.</span>
+        <span class="lang-en">I care about well-crafted software: clean interfaces, attention to detail, and respect for the people who use it. That's why this site follows the GNOME guidelines too.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================ CONTACT ============================ -->
+  <section class="view" id="view-contact">
+    <h1 class="page-title"><span class="lang-it">Contatti</span><span class="lang-en">Contact</span></h1>
+    <p class="page-intro">
+      <span class="lang-it">Mi trovi qui. Scrivimi pure.</span>
+      <span class="lang-en">You can find me here. Feel free to reach out.</span>
+    </p>
+    <div class="group">
+      <div class="boxed-list" id="contact-list"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span class="lang-it">© 2026 Paolo Santucci · Costruito con <a href="#" onclick="return false">Jekyll</a> · Tema in stile GNOME</span>
+  <span class="lang-en">© 2026 Paolo Santucci · Built with <a href="#" onclick="return false">Jekyll</a> · GNOME-style theme</span>
+</footer>
+
+<script>
+  /* ---------- Data ---------- */
+  const posts = [
+    {
+      title_it: "Costruire Métra con GTK4 e libadwaita",
+      title_en: "Building Métra with GTK4 and libadwaita",
+      sub_it: "Come ho disegnato un'app nativa che segue le linee guida GNOME.",
+      sub_en: "How I designed a native app that follows the GNOME guidelines."
+    },
+    {
+      title_it: "Perché un tracker del ciclo completamente offline",
+      title_en: "Why a fully offline cycle tracker",
+      sub_it: "Privacy prima di tutto: nessun account, nessun cloud, nessun tracciamento.",
+      sub_en: "Privacy first: no account, no cloud, no tracking."
+    },
+    {
+      title_it: "Note di un senior engineer che programma per diletto",
+      title_en: "Notes from a senior engineer who codes for fun",
+      sub_it: "Cosa imparo dai progetti personali e perché continuo a farli.",
+      sub_en: "What I learn from side projects and why I keep making them."
+    }
+  ];
+
+  const contacts = [
+    { letter: "G", cls: "ic-dark", title: "GitHub", sub: "github.com/paolosantucci" },
+    { letter: "in", cls: "ic-blue", title: "LinkedIn", sub: "linkedin.com/in/paolosantucci" }
+  ];
+
+  const chevron = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 4 4 4-4 4"/></svg>';
+  const extlink = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11 11 5"/><path d="M6 5h5v5"/></svg>';
+
+  function postRow(p) {
+    return `<a class="row activatable" href="#" onclick="return false">
+      <div class="row-text">
+        <div class="row-title"><span class="lang-it">${p.title_it}</span><span class="lang-en">${p.title_en}</span></div>
+        <div class="row-sub"><span class="lang-it">${p.sub_it}</span><span class="lang-en">${p.sub_en}</span></div>
+      </div>
+      <div class="row-suffix">${chevron}</div>
+    </a>`;
+  }
+  function contactRow(c) {
+    return `<a class="row activatable" href="#" onclick="return false">
+      <div class="row-icon chip-letter ${c.cls}">${c.letter}</div>
+      <div class="row-text">
+        <div class="row-title">${c.title}</div>
+        <div class="row-sub">${c.sub}</div>
+      </div>
+      <div class="row-suffix">${extlink}</div>
+    </a>`;
+  }
+
+  document.getElementById('home-posts').innerHTML = posts.slice(0,2).map(postRow).join('');
+  document.getElementById('blog-posts').innerHTML = posts.map(postRow).join('');
+  document.getElementById('home-contacts').innerHTML = contacts.map(contactRow).join('');
+  document.getElementById('contact-list').innerHTML = contacts.map(contactRow).join('');
+
+  /* ---------- View switching ---------- */
+  const navBtns = [...document.querySelectorAll('.nav-btn')];
+  function go(view) {
+    document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
+    navBtns.forEach(b => b.classList.toggle('active', b.dataset.view === view));
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+  }
+  navBtns.forEach(b => b.addEventListener('click', () => go(b.dataset.view)));
+  document.querySelectorAll('[data-goto]').forEach(el => el.addEventListener('click', e => { e.preventDefault(); go(el.dataset.goto); }));
+
+  /* ---------- Theme ---------- */
+  const root = document.documentElement;
+  function setTheme(t) { root.setAttribute('data-theme', t); try { localStorage.setItem('ps-theme', t); } catch(e){} }
+  (function initTheme(){
+    let t; try { t = localStorage.getItem('ps-theme'); } catch(e){}
+    if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    setTheme(t);
+  })();
+  document.getElementById('themeBtn').addEventListener('click', () => {
+    setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ---------- Language ---------- */
+  function setLang(l) {
+    root.setAttribute('data-lang', l);
+    root.setAttribute('lang', l);
+    document.querySelectorAll('#langToggle button').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+    try { localStorage.setItem('ps-lang', l); } catch(e){}
+  }
+  (function initLang(){
+    let l; try { l = localStorage.getItem('ps-lang'); } catch(e){}
+    setLang(l || 'it');
+  })();
+  document.querySelectorAll('#langToggle button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+</script>
+</body>
+</html>

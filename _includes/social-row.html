@@ -1,0 +1,9 @@
+{%- assign item = include.item -%}
+<a class="row activatable" href="{{ item.url }}" target="_blank" rel="noopener">
+  <div class="row-icon chip-letter ic-{{ item.color | default: 'dark' }}">{{ item.letter }}</div>
+  <div class="row-text">
+    <div class="row-title">{{ item.name }}</div>
+    {%- if item.handle %}<div class="row-sub">{{ item.handle }}</div>{%- endif %}
+  </div>
+  <div class="row-suffix">{% include icon.html name="ext" %}</div>
+</a>

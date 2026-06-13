@@ -1,0 +1,13 @@
+---
+layout: default
+nav: apps
+permalink: /apps/
+---
+<h1 class="page-title">{% include t.html key="apps_title" %}</h1>
+<p class="page-intro">{% include t.html key="apps_intro" %}</p>
+
+<div class="group">
+  <div class="app-grid">
+    {%- for app in site.apps %}{% include app-card.html app=app %}{% endfor %}
+  </div>
+</div>

@@ -1,0 +1,13 @@
+---
+layout: default
+nav: contact
+permalink: /contact/
+---
+<h1 class="page-title">{% include t.html key="contact_title" %}</h1>
+<p class="page-intro">{% include t.html key="contact_intro" %}</p>
+
+<div class="group">
+  <div class="boxed-list">
+    {%- for item in site.social %}{% include social-row.html item=item %}{% endfor %}
+  </div>
+</div>

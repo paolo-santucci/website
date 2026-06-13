@@ -1,0 +1,47 @@
+---
+layout: default
+---
+<section class="hero">
+  <div class="avatar">{{ site.author.initials }}</div>
+  <h1>{{ site.author.name }}</h1>
+  <p class="subtitle">{% include t.html key="hero_bio" %}</p>
+  <div class="hero-actions">
+    <a class="btn btn-suggested" href="{{ '/apps/' | relative_url }}">{% include icon.html name="apps" %}{% include t.html key="cta_apps" %}</a>
+    <a class="btn btn-flat" href="{{ '/contact/' | relative_url }}">{% include t.html key="cta_contact" %}</a>
+  </div>
+</section>
+
+{%- if site.apps and site.apps.size > 0 %}
+<div class="group">
+  <div class="group-header">
+    <h2 class="group-title">{% include t.html key="apps_title" %}</h2>
+    <a class="group-link" href="{{ '/apps/' | relative_url }}">{% include t.html key="apps_see_all" %}</a>
+  </div>
+  <div class="app-grid">
+    {%- for app in site.apps %}{% include app-card.html app=app %}{% endfor %}
+  </div>
+</div>
+{%- endif %}
+
+{%- if site.blog and site.posts.size > 0 %}
+<div class="group">
+  <div class="group-header">
+    <h2 class="group-title">{% include t.html key="blog_title" %}</h2>
+    <a class="group-link" href="{{ '/blog/' | relative_url }}">{% include t.html key="blog_see_all" %}</a>
+  </div>
+  <div class="boxed-list">
+    {%- for post in site.posts limit: 3 %}{% include post-row.html post=post %}{% endfor %}
+  </div>
+</div>
+{%- endif %}
+
+{%- if site.social and site.social.size > 0 %}
+<div class="group">
+  <div class="group-header">
+    <h2 class="group-title">{% include t.html key="contact_title" %}</h2>
+  </div>
+  <div class="boxed-list">
+    {%- for item in site.social %}{% include social-row.html item=item %}{% endfor %}
+  </div>
+</div>
+{%- endif %}
