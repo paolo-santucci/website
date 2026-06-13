@@ -1,8 +1,8 @@
 {%- assign app = include.app -%}
-{%- if app.url contains '//' -%}{%- assign ext = true -%}{%- endif -%}
+{%- if app.link contains '//' -%}{%- assign ext = true -%}{%- endif -%}
 {%- assign icon_is_img = false -%}
 {%- if app.icon contains '/' or app.icon contains '.' -%}{%- assign icon_is_img = true -%}{%- endif -%}
-<a class="app-card" href="{{ app.url }}"{% if ext %} target="_blank" rel="noopener"{% endif %}>
+<a class="app-card" href="{{ app.link }}"{% if ext %} target="_blank" rel="noopener"{% endif %}>
   <div class="app-icon icon-{{ app.color | default: 'pink' }}{% if icon_is_img %} app-icon--img{% endif %}">
     {%- if app.icon -%}{%- if icon_is_img -%}<img src="{{ app.icon | relative_url }}" alt="" loading="lazy">{%- else -%}{% include icon.html name=app.icon %}{%- endif -%}{%- else -%}<span class="app-icon-letter">{{ app.name | slice: 0 }}</span>{%- endif -%}
   </div>
