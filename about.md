@@ -6,44 +6,44 @@ title_it: Chi sono
 title_en: About
 ---
 <div class="lang-it" markdown="1">
-    Ho passato venticinque anni a scrivere software per altri.
-    
-    Quest'anno ne ho scritto uno per me: da solo, open-source.
-    
-    ---
-    
-    ## Mr. Wolf
-    
-    Prima di Mētra, oltre venticinque anni di consulenza in settori che hanno poco in comune: telco, ministeri, banche, cybersecurity, sistemi safety-critical.
-    
-    La costante era *come* mi chiamavano: a progetto già in fiamme, con poco contesto e meno tempo. Tarantino aveva una battuta per questo lavoro: «Sono Mr. Wolf. Risolvo problemi».
-    
-    Mētra l'ho scritta diversamente. Senza incendio, senza deadline, senza nessuno che dicesse cosa salvare prima.
-    
-    ---
-    
-    ## Mētra
-    
-    È un'app di tracciamento del ciclo mestruale con un'architettura prima ancora che un valore: **local-first**. I dati vivono sul tuo telefono — non sul mio server, non su un SaaS, da nessuna parte da cui io possa farli leggere a qualcun altro. La privacy non è un add-on: è ciò che resta quando il server non c'è. Open-source, GPL-3.0. Un taccuino digitale intimo, non un'app fitness.
-    
-    Tutto in Flutter + Dart + Drift su SQLCipher. AES-256-GCM con derivazione chiavi Argon2id. Cloud backup opzionale e zero-knowledge — la chiave non lascia il dispositivo. WCAG 2.2 AA dall'inizio. CI/CD su GitHub Actions.
-    
-    ---
-    
-    ## «Non so niente di questo, vediamo cosa riesco a fare»
-    
-    Una cosa non è cambiata in venticinque anni: il mio scenario preferito resta proprio quello. Mētra è cominciata così — prima app mobile, primo open-source, solo delivery con multi-agent AI orchestration. Dalla prima riga di codice ad App Store in poco più di due settimane.
-    
-    Claude Code non ha scritto l'architettura — l'ho scritta io — ma ha compresso i tempi in modo significativo.
-    
-    ---
-    
-    ## Venticinque anni, in breve
-    
-    - **2026 — oggi.** *Mētra* — creatore, maintainer e sviluppatore open-source. In autonomia.
-    - **1998 — oggi.** *Capgemini.* Da Software Engineer a Senior Software Engineer Lead. Java/Java EE, sistemi web e desktop, real-time su LynxOS, ambienti safety-critical.
-    - **Lungo la strada.** Telecom Italia Sparkle, Ministero degli Affari Esteri, Comune di Roma, Ferservizi/Almaviva, banche e sistemi integrati. Penetration test, portali enterprise, migrazioni, integrazioni.
-    - **Dove tutto è cominciato.** 1998, Millennium Bug: correzione di programmi Cobol, Cobol II e Pl/1, e knowledge transfer ai colleghi. Il primo «progetto in fiamme».
+Ho passato venticinque anni a scrivere software per altri.
+
+Quest'anno ne ho scritto uno per me: da solo, open-source.
+
+---
+
+## Mr. Wolf
+
+Prima di Mētra, oltre venticinque anni di consulenza in settori che hanno poco in comune: telco, ministeri, banche, cybersecurity, sistemi safety-critical.
+
+La costante era *come* mi chiamavano: a progetto già in fiamme, con poco contesto e meno tempo. Tarantino aveva una battuta per questo lavoro: «Sono Mr. Wolf. Risolvo problemi».
+
+Mētra l'ho scritta diversamente. Senza incendio, senza deadline, senza nessuno che dicesse cosa salvare prima.
+
+---
+
+## Mētra
+
+È un'app di tracciamento del ciclo mestruale con un'architettura prima ancora che un valore: **local-first**. I dati vivono sul tuo telefono — non sul mio server, non su un SaaS, da nessuna parte da cui io possa farli leggere a qualcun altro. La privacy non è un add-on: è ciò che resta quando il server non c'è. Open-source, GPL-3.0. Un taccuino digitale intimo, non un'app fitness.
+
+Tutto in Flutter + Dart + Drift su SQLCipher. AES-256-GCM con derivazione chiavi Argon2id. Cloud backup opzionale e zero-knowledge — la chiave non lascia il dispositivo. WCAG 2.2 AA dall'inizio. CI/CD su GitHub Actions.
+
+---
+
+## «Non so niente di questo, vediamo cosa riesco a fare»
+
+Una cosa non è cambiata in venticinque anni: il mio scenario preferito resta proprio quello. Mētra è cominciata così — prima app mobile, primo open-source, solo delivery con multi-agent AI orchestration. Dalla prima riga di codice ad App Store in poco più di due settimane.
+
+Claude Code non ha scritto l'architettura — l'ho scritta io — ma ha compresso i tempi in modo significativo.
+
+---
+
+## Venticinque anni, in breve
+
+- **2026 — oggi.** *Mētra* — creatore, maintainer e sviluppatore open-source. In autonomia.
+- **1998 — oggi.** *Capgemini.* Da Software Engineer a Senior Software Engineer Lead. Java/Java EE, sistemi web e desktop, real-time su LynxOS, ambienti safety-critical.
+- **Lungo la strada.** Telecom Italia Sparkle, Ministero degli Affari Esteri, Comune di Roma, Ferservizi/Almaviva, banche e sistemi integrati. Penetration test, portali enterprise, migrazioni, integrazioni.
+- **Dove tutto è cominciato.** 1998, Millennium Bug: correzione di programmi Cobol, Cobol II e Pl/1, e knowledge transfer ai colleghi. Il primo «progetto in fiamme».
 
 </div>
 <div class="lang-en" markdown="1">

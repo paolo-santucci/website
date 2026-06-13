@@ -222,6 +222,7 @@ main {
   margin-bottom: 16px;
 }
 .app-icon .ic { width: 34px; height: 34px; }
+.app-icon--img img { width: 100%; height: 100%; border-radius: inherit; display: block; }
 .app-icon-letter { font-size: 30px; font-weight: 700; }
 .icon-pink   { background: linear-gradient(135deg, #f06ba8, #b5217a); }
 .icon-blue   { background: linear-gradient(135deg, #62a0ea, #1c71d8); }
